@@ -1,8 +1,12 @@
 {
   "name": "open-observable",
-  "version": "1.0.0",
+  "version": "1.0.8",
   "description": "",
-  "main": "dist/index.js",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p .",
@@ -16,19 +20,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/preset-env": "^7.16.4",
-    "@babel/preset-react": "^7.16.0",
-    "@babel/preset-typescript": "^7.16.0",
-    "@testing-library/react": "^12.1.2",
-    "@types/jest": "^27.0.3",
     "@types/react": "^17.0.0",
-    "@types/react-router-dom": "^5.1.6",
-    "jest": "^27.3.1",
+    "prettier": "^2.4.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "typescript": "^3.3.3"
   },
-  "dependencies": {
-    "prettier": "^2.4.1"
-  }
+  "dependencies": {}
 }
