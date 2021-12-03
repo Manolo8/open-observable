@@ -4,23 +4,23 @@ A hook library for subscriber data
 
 ## Hooks
 
-* useObservable
-* useSubscriber
-* useSubscriberSelector
-* useSubscriberSelectorAsSubscriber
-* useSubscriberEffect
-* useGlobalObservable
-* useAnySubscriberChangeEffect
+-   useObservable
+-   useSubscriber
+-   useSubscriberSelector
+-   useSubscriberSelectorAsSubscriber
+-   useSubscriberEffect
+-   useGlobalObservable
+-   useAnySubscriberChangeEffect
 
 ## Components
 
-* GlobalObservable
-* Listen
+-   GlobalObservable
+-   Listen
 
 # Methods
 
-* createGlobalObservableKey
-* listen
+-   createGlobalObservableKey
+-   listen
 
 ## Examples
 
@@ -29,29 +29,25 @@ const CountingExample: VFC = () => {
     const observable = useObservable(0);
     //Only rerender the listen block
     return (
-        <div style={{display: "flex", flexDirection: 'column', gap: '1rem'}}>
-            <div>
-                Current value is: {listen(observable.subscriber, x => x)}
-            </div>
-            <button onClick={() => observable.dispatch(old => old + 1)}>
-                Click
-            </button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div>Current value is: {listen(observable.subscriber, (x) => x)}</div>
+            <button onClick={() => observable.dispatch((old) => old + 1)}>Click</button>
         </div>
-    )
-}
+    );
+};
 ```
 
 ```tsx
 const PassingToChildren: VFC = () => {
     const observable = useObservable('testing');
 
-    return <Children _value={observable.subscriber}/>
-}
+    return <Children _value={observable.subscriber} />;
+};
 
-type ChildrenProps = { _value: Subscriber<string> }
-const Children: VFC<ChildrenProps> = ({_value}) => {
-    const value = useSubscriber(_value)
+type ChildrenProps = { _value: Subscriber<string> };
+const Children: VFC<ChildrenProps> = ({ _value }) => {
+    const value = useSubscriber(_value);
 
-    return <div>{value}</div>
-}
+    return <div>{value}</div>;
+};
 ```

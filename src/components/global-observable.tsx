@@ -1,8 +1,7 @@
 import React, { FC, useCallback, useRef } from 'react';
 import { GlobalObservableContext } from '../state/global-observable-context';
-import { Observable } from '../types/observable';
-import { GlobalObservableKey } from '../types/global-observable-key';
-import { createObservable } from '../other/create-observable';
+import { Observable } from '../other/observable';
+import { GlobalObservableKey } from '../other/create-global-observable-key';
 
 export const GlobalObservable: FC = ({ children }) => {
     const valuesRef = useRef<Record<string, Observable<any>>>({});
@@ -10,7 +9,7 @@ export const GlobalObservable: FC = ({ children }) => {
     const observable = useCallback((key: GlobalObservableKey<any>) => {
         let value = valuesRef.current[key.name];
 
-        if (!value) value = valuesRef.current[key.name] = createObservable(key.initialValue);
+        if (!value) value = valuesRef.current[key.name] = new Observable<any>(key.initial);
 
         return value;
     }, []);

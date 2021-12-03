@@ -1,7 +1,7 @@
-import { CleanupCallback } from './cleanup-callback';
 import { Callback } from './callback';
+import { CleanupCallback } from './cleanup-callback';
 
-export type Subscriber<T> = {
-    value: () => T;
+export interface ISubscribable<T> {
+    current: () => T;
     subscribe: (callback: Callback<T>, flushFirst?: boolean) => CleanupCallback;
-};
+}

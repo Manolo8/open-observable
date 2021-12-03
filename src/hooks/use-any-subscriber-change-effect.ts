@@ -1,9 +1,9 @@
 import { CleanupCallback } from '../types/cleanup-callback';
 import { useEffect } from 'react';
-import { Subscriber } from '../types/subscriber';
+import { ISubscribable } from '../types/i-subscribable';
 
-export const useAnyObservableChangeEffect = (
-    observables: Subscriber<any>[],
+export const useAnySubscriberChangeEffect = (
+    observables: ISubscribable<any>[],
     callback: () => CleanupCallback | void
 ) => {
     useEffect(() => {
@@ -21,5 +21,6 @@ export const useAnyObservableChangeEffect = (
             clean.forEach((x) => x());
             if (cleanup) cleanup();
         };
-    }, observables);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [callback, ...observables]);
 };

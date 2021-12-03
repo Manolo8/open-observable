@@ -1,14 +1,17 @@
-import { Subscriber } from '../types/subscriber';
 import { useObservable } from './use-observable';
 import { useEffect } from 'react';
+import { ISubscribable } from '../types/i-subscribable';
 
 export const useSubscriberSelectorAsSubscriber = <T, V>(
-    subscriber: Subscriber<T>,
+    subscriber: ISubscribable<T>,
     selector: (value: T, prev: T | undefined) => V
-): Subscriber<V> => {
-    const observable = useObservable(() => selector(subscriber.value(), undefined));
+): ISubscribable<V> => {
+    const observable = useObservable<V>(() => selector(subscriber.current(), undefined));
 
-    useEffect(() => subscriber.subscribe((value, prev) => observable.dispatch(selector(value, prev)), false), []);
+    useEffect(
+        () => subscriber.subscribe((value, prev) => observable.next(selector(value, prev))),
+        [observable, selector, subscriber]
+    );
 
-    return observable.subscriber;
+    return observable.toSubscriber();
 };

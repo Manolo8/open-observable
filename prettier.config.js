@@ -17,5 +17,4 @@
     useTabs: false,
     vueIndentScriptAndStyle: false,
     rangeStart: 0,
-    sortClassNamesSortFunctions: "cls,clsIf"
 };

@@ -1,10 +1,10 @@
-import {Subscriber} from '../types/subscriber';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
+import { ISubscribable } from '../types/i-subscribable';
 
-export const useSubscriber = <T>(subscriber: Subscriber<T>): T => {
-    const [value, setValue] = useState(subscriber.value());
+export const useSubscriber = <T>(subscriber: ISubscribable<T>): T => {
+    const [value, setValue] = useState(subscriber.current());
 
-    useEffect(() => subscriber.subscribe(setValue), []);
+    useEffect(() => subscriber.subscribe(setValue), [subscriber]);
 
     return value;
 };
