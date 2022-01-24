@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { ISubscribable } from '../types/i-subscribable';
+import {useEffect, useState} from 'react';
+import {ISubscriber} from '../types/i-subscriber';
 
 export const useSubscriberSelector = <T, V>(
-    subscriber: ISubscribable<T>,
+    subscriber: ISubscriber<T>,
     selector: (value: T, prev: T | undefined) => V
 ): V => {
     const [value, setValue] = useState(() => selector(subscriber.current(), undefined));

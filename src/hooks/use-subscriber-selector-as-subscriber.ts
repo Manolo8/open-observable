@@ -1,11 +1,11 @@
 import { useObservable } from './use-observable';
 import { useEffect } from 'react';
-import { ISubscribable } from '../types/i-subscribable';
+import { ISubscriber } from '../types/i-subscriber';
 
 export const useSubscriberSelectorAsSubscriber = <T, V>(
-    subscriber: ISubscribable<T>,
+    subscriber: ISubscriber<T>,
     selector: (value: T, prev: T | undefined) => V
-): ISubscribable<V> => {
+): ISubscriber<V> => {
     const observable = useObservable<V>(() => selector(subscriber.current(), undefined));
 
     useEffect(
@@ -13,5 +13,5 @@ export const useSubscriberSelectorAsSubscriber = <T, V>(
         [observable, selector, subscriber]
     );
 
-    return observable.toSubscriber();
+    return observable.asSubscriber();
 };

@@ -1,24 +1,27 @@
 import { Callback } from '../types/callback';
 import { InitialValue } from '../types/initial-value';
 import { CleanupCallback } from '../types/cleanup-callback';
-import { ISubscribable } from '../types/i-subscribable';
+import { ISubscriber } from '../types/i-subscriber';
 import { Dispatch } from '../types/dispatch';
-import { Subscriber } from './subscriber';
 
-export class Observable<T> implements ISubscribable<T> {
+export class Observable<T> implements ISubscriber<T> {
     private _value: T;
     private _watching: Callback<T>[];
-    private _subscriber?: Subscriber<T>;
 
     constructor(initial: InitialValue<T>) {
         this._value = typeof initial === 'function' ? (initial as () => T)() : initial;
         this._watching = [];
+
+        this.subscribe = this.subscribe.bind(this);
+        this.next = this.next.bind(this);
+        this.current = this.current.bind(this);
+        this.asSubscriber = this.asSubscriber.bind(this);
     }
 
-    public subscribe(callback: Callback<T>, flushFirst?: boolean): CleanupCallback {
+    public subscribe(callback: Callback<T>, ignoreFirst?: boolean): CleanupCallback {
         this._watching.push(callback);
 
-        if (flushFirst) callback(this._value, undefined);
+        if (!ignoreFirst) callback(this._value, undefined);
 
         return () => this._watching.splice(this._watching.indexOf(callback), 1);
     }
@@ -36,15 +39,15 @@ export class Observable<T> implements ISubscribable<T> {
         this._watching.forEach((x) => x(newValue, prev));
     }
 
-    public toSubscriber(): Subscriber<T> {
-        if (!this._subscriber) {
-            this._subscriber = new Subscriber<T>(this);
-        }
-
-        return this._subscriber;
+    public asSubscriber(): ISubscriber<T> {
+        return this as ISubscriber<T>;
     }
 
     public current(): T {
         return this._value;
+    }
+
+    public watchingCount() {
+        return this._watching.length;
     }
 }

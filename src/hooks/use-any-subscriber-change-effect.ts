@@ -1,9 +1,9 @@
 import { CleanupCallback } from '../types/cleanup-callback';
 import { useEffect } from 'react';
-import { ISubscribable } from '../types/i-subscribable';
+import { ISubscriber } from '../types/i-subscriber';
 
 export const useAnySubscriberChangeEffect = (
-    observables: ISubscribable<any>[],
+    observables: ISubscriber<any>[],
     callback: () => CleanupCallback | void
 ) => {
     useEffect(() => {
@@ -15,7 +15,10 @@ export const useAnySubscriberChangeEffect = (
             cleanup = callback();
         };
 
-        const clean = observables.map((x) => x.subscribe(internalCallback));
+        const clean = observables.map((x) => x.subscribe(internalCallback, true));
+
+        //first
+        internalCallback();
 
         return () => {
             clean.forEach((x) => x());

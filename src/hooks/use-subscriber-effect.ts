@@ -1,9 +1,9 @@
 import { CleanupCallback } from '../types/cleanup-callback';
 import { useEffect } from 'react';
-import { ISubscribable } from '../types/i-subscribable';
+import { ISubscriber } from '../types/i-subscriber';
 
 export const useSubscriberEffect = <T>(
-    subscriber: ISubscribable<T>,
+    subscriber: ISubscriber<T>,
     callback: (value: T, prevValue: T | undefined) => CleanupCallback | void
 ): void => {
     useEffect(() => {

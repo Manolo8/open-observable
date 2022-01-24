@@ -1,14 +1,14 @@
-import React, { ReactElement, VFC } from 'react';
+import React, { ReactNode, VFC } from 'react';
 import { useSubscriber } from '../hooks/use-subscriber';
-import { ISubscribable } from '../types/i-subscribable';
+import { ISubscriber } from '../types/i-subscriber';
 
-type Props = { subscriber: ISubscribable<any>; render: (value: any) => ReactElement };
+type Props = { subscriber: ISubscriber<any>; render: (value: any) => ReactNode };
 export const Listen: VFC<Props> = ({ subscriber, render }) => {
     const value = useSubscriber(subscriber);
 
-    return render(value);
+    return (render(value) as any) ?? null;
 };
 
-export const listen = <T,>(subscriber: ISubscribable<T>, render: (value: T) => ReactElement) => {
+export const listen = <T,>(subscriber: ISubscriber<T>, render: (value: T) => ReactNode) => {
     return <Listen subscriber={subscriber} render={render} />;
 };
