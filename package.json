@@ -1,6 +1,6 @@
 {
     "name": "open-observable",
-    "version": "1.0.19",
+    "version": "1.0.20",
     "homepage": "https://github.com/Manolo8/open-observable",
     "description": "",
     "main": "./build/index.js",
