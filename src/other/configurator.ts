@@ -17,10 +17,10 @@ export class Configurator<TSource> implements IConfigurator<TSource> {
     }
 
     public once(callback: (value: TSource) => void) {
-        if (!this._first) return;
+        if (!this._first) return this;
         callback(this._source);
         this._called = true;
-        return this as any;
+        return this;
     }
 
     public on(deps: any[], callback: (value: TSource) => void) {
@@ -31,13 +31,13 @@ export class Configurator<TSource> implements IConfigurator<TSource> {
         if (lastDeps) {
             if (lastDeps.length !== deps.length) throw new Error('Deps length mismatch');
 
-            if (shallowEquals(lastDeps, deps)) return;
+            if (shallowEquals(lastDeps, deps)) return this;
         }
 
         this._stack[current] = deps;
         callback(this._source);
         this._called = true;
-        return this as any;
+        return this;
     }
 
     public reset() {
