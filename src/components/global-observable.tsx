@@ -1,9 +1,9 @@
-import React, { FC, useCallback, useRef } from 'react';
+import React, { FC, PropsWithChildren, useCallback, useRef } from 'react';
 import { GlobalObservableContext } from '../state/global-observable-context';
 import { Observable } from '../other/observable';
 import { GlobalObservableKey } from '../other/global-observable-key';
 
-export const GlobalObservable: FC = ({ children }) => {
+export const GlobalObservable: FC<PropsWithChildren<{}>> = ({ children }) => {
     const valuesRef = useRef<Record<string, Observable<any>>>({});
 
     const observable = useCallback((key: GlobalObservableKey<any>) => {

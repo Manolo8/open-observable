@@ -2,10 +2,10 @@ import { useObservable } from './use-observable';
 import { useEffect } from 'react';
 import { ISubscriber } from '../types/i-subscriber';
 
-export const useSubscriberSelectorAsSubscriber = <T, V>(
+export function useSubscriberSelectorAsSubscriber<T, V>(
     subscriber: ISubscriber<T>,
     selector: (value: T, prev: T | undefined) => V
-): ISubscriber<V> => {
+): ISubscriber<V> {
     const observable = useObservable<V>(() => selector(subscriber.current(), undefined));
 
     useEffect(
@@ -14,4 +14,4 @@ export const useSubscriberSelectorAsSubscriber = <T, V>(
     );
 
     return observable.asSubscriber();
-};
+}

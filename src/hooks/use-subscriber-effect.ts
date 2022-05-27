@@ -2,10 +2,10 @@ import { CleanupCallback } from '../types/cleanup-callback';
 import { useEffect } from 'react';
 import { ISubscriber } from '../types/i-subscriber';
 
-export const useSubscriberEffect = <T>(
+export function useSubscriberEffect<T>(
     subscriber: ISubscriber<T>,
     callback: (value: T, prevValue: T | undefined) => CleanupCallback | void
-): void => {
+): void {
     useEffect(() => {
         let lastCleanup: CleanupCallback | void;
 
@@ -20,4 +20,4 @@ export const useSubscriberEffect = <T>(
             if (lastCleanup) lastCleanup();
         };
     }, [subscriber, callback]);
-};
+}

@@ -1,11 +1,11 @@
+import { ISubscriber } from '../types/i-subscriber';
 import { CleanupCallback } from '../types/cleanup-callback';
 import { useEffect } from 'react';
-import { ISubscriber } from '../types/i-subscriber';
 
-export const useAnySubscriberChangeEffect = (
+export function useAnySubscriberChangeEffect(
     observables: ISubscriber<any>[],
     callback: () => CleanupCallback | void
-) => {
+): void {
     useEffect(() => {
         let cleanup: CleanupCallback | void;
 
@@ -26,4 +26,4 @@ export const useAnySubscriberChangeEffect = (
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [callback, ...observables]);
-};
+}
