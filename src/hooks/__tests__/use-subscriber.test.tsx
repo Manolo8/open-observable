@@ -1,4 +1,4 @@
-import React, { VFC } from 'react';
+import React from 'react';
 import { useObservable } from '../use-observable';
 import { render, fireEvent, act } from '@testing-library/react';
 import { Listen } from '../../components/listen';
@@ -6,7 +6,7 @@ import { Observable } from '../../other/observable';
 import { useSubscriber } from '../use-subscriber';
 import { ISubscriber } from '../../types/i-subscriber';
 
-const TestComponent: VFC = () => {
+function TestComponent() {
     const observable = useObservable(0);
 
     return (
@@ -22,7 +22,7 @@ const TestComponent: VFC = () => {
             </button>
         </div>
     );
-};
+}
 
 it('should sync state', function () {
     const element = render(<TestComponent />);
@@ -42,11 +42,11 @@ it('should sync state', function () {
     expect(value?.textContent).toBe('-1');
 });
 
-const FunctionComponent: VFC<{ subscriber: ISubscriber<() => number> }> = ({ subscriber }) => {
+function FunctionComponent({ subscriber }: { subscriber: ISubscriber<() => number> }) {
     const value = useSubscriber(subscriber);
 
     return <div data-testid={0}>{value()}</div>;
-};
+}
 
 it('should keep function values intact', function () {
     const observable = new Observable<() => number>(() => () => 1);

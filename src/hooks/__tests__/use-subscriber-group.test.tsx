@@ -1,11 +1,11 @@
 import { render, fireEvent, act } from '@testing-library/react';
-import React, { useCallback, useEffect, VFC } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Listen } from '../../components/listen';
 import { Observable } from '../../other/observable';
 import { useSubscriberGroup } from '../use-subscriber-group';
 
 
-const TestComponent: VFC = () => {
+function TestComponent() {
     const observable1 = new Observable(1);
 
 
@@ -23,7 +23,7 @@ const TestComponent: VFC = () => {
             </button>
         </div>
     );
-};
+}
 
 it('should use 3 observables', () => {
     const element = render(<TestComponent />);
@@ -48,16 +48,16 @@ interface GroupProps {
 
 //child effects flush before the parent ones, so this changes an observable
 //after the first render but before the group subscribes to it
-const Bumper: VFC<{ onMount?: () => void }> = ({ onMount }) => {
+function Bumper({ onMount }: { onMount?: () => void }) {
     useEffect(() => {
         if (onMount) onMount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return null;
-};
+}
 
-const GroupComponent: VFC<GroupProps> = ({ observable1, observable2, onMount }) => {
+function GroupComponent({ observable1, observable2, onMount }: GroupProps) {
     const group = useSubscriberGroup(observable1, observable2);
 
     return (
@@ -68,7 +68,7 @@ const GroupComponent: VFC<GroupProps> = ({ observable1, observable2, onMount }) 
             </div>
         </div>
     );
-};
+}
 
 it('should reflect current values on mount', () => {
     const observable1 = new Observable(1);

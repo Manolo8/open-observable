@@ -1,5 +1,5 @@
 import { render, fireEvent } from '@testing-library/react';
-import React, { useState, VFC } from 'react';
+import React, { useState } from 'react';
 import { GlobalObservable } from '../../components/global-observable';
 import { GlobalObservableKey } from '../../other/global-observable-key';
 import { Observable } from '../../other/observable';
@@ -15,13 +15,13 @@ interface CaptureProps {
     onReady: (observable: Observable<number>) => void;
 }
 
-const Capture: VFC<CaptureProps> = ({ observableKey, onReady }) => {
+function Capture({ observableKey, onReady }: CaptureProps) {
     const $value = useGlobalObservable(observableKey);
 
     onReady($value);
 
     return null;
-};
+}
 
 beforeEach(() => {
     localStorage.clear();

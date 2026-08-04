@@ -1,5 +1,5 @@
 import { render, fireEvent } from '@testing-library/react';
-import React, { useCallback, VFC } from 'react';
+import React, { useCallback } from 'react';
 import { Listen } from '../../components/listen';
 import { GlobalObservable } from '../../components/global-observable';
 import { GlobalObservableKey } from '../../other/global-observable-key';
