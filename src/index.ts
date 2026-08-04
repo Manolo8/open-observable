@@ -1,4 +1,4 @@
-export { Listen, listen } from './components/listen';
+export { Listen } from './components/listen';
 export { GlobalObservable } from './components/global-observable';
 
 export { Configurator } from './other/configurator';
@@ -13,6 +13,7 @@ export { useObservable } from './hooks/use-observable';
 export { useSubscriberSelectorAsSubscriber } from './hooks/use-subscriber-selector-as-subscriber';
 export { useAnySubscriberChangeEffect } from './hooks/use-any-subscriber-change-effect';
 export { useEmitter } from './hooks/use-emitter';
+export { useSubscriberGroup } from './hooks/use-subscriber-group';
 
 export { Callback } from './types/callback';
 export { Dispatch } from './types/dispatch';

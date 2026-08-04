@@ -1,14 +1,19 @@
 import React, { VFC } from 'react';
 import { useObservable } from '../use-observable';
-import { listen } from '../../components/listen';
-import { render } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
+import { Listen } from '../../components/listen';
+import { Observable } from '../../other/observable';
+import { useSubscriber } from '../use-subscriber';
+import { ISubscriber } from '../../types/i-subscriber';
 
 const TestComponent: VFC = () => {
     const observable = useObservable(0);
 
     return (
         <div>
-            <div data-testid={0}>{listen(observable, (x) => x)}</div>
+            <div data-testid={0}>
+                <Listen subscriber={observable}>{(value) => value}</Listen>
+            </div>
             <button data-testid={1} onClick={() => observable.next((old) => old + 1)}>
                 increment
             </button>
@@ -27,12 +32,34 @@ it('should sync state', function () {
     const decrement = element.queryByTestId('2');
 
     expect(value?.textContent).toBe('0');
-    increment?.click();
+    fireEvent.click(increment!);
     expect(value?.textContent).toBe('1');
-    increment?.click();
+    fireEvent.click(increment!);
     expect(value?.textContent).toBe('2');
-    decrement?.click();
-    decrement?.click();
-    decrement?.click();
+    fireEvent.click(decrement!);
+    fireEvent.click(decrement!);
+    fireEvent.click(decrement!);
     expect(value?.textContent).toBe('-1');
+});
+
+const FunctionComponent: VFC<{ subscriber: ISubscriber<() => number> }> = ({ subscriber }) => {
+    const value = useSubscriber(subscriber);
+
+    return <div data-testid={0}>{value()}</div>;
+};
+
+it('should keep function values intact', function () {
+    const observable = new Observable<() => number>(() => () => 1);
+
+    const element = render(<FunctionComponent subscriber={observable} />);
+
+    const value = element.queryByTestId('0');
+
+    expect(value?.textContent).toBe('1');
+
+    act(() => observable.next(() => () => 2));
+    expect(value?.textContent).toBe('2');
+
+    act(() => observable.next(() => () => 3));
+    expect(value?.textContent).toBe('3');
 });

@@ -67,3 +67,51 @@ it('should cleanup correctly', function () {
 
     expect(observable.watchingCount()).toBe(0);
 });
+
+it('should not remove other subscribers when cleanup is called twice', function () {
+    const observable = new Observable(0);
+
+    const first: number[] = [];
+    const second: number[] = [];
+
+    const cleanupFirst = observable.subscribe((val) => first.push(val), true);
+    observable.subscribe((val) => second.push(val), true);
+
+    expect(observable.watchingCount()).toBe(2);
+
+    cleanupFirst();
+    cleanupFirst();
+
+    expect(observable.watchingCount()).toBe(1);
+
+    observable.next(1);
+
+    expect(first).toEqual([]);
+    expect(second).toEqual([1]);
+});
+
+it('should notify every subscriber even when one unsubscribes itself while notifying', function () {
+    const observable = new Observable(0);
+
+    const notified: string[] = [];
+
+    observable.subscribe(() => notified.push('first'), true);
+
+    let cleanupSecond: () => void;
+
+    cleanupSecond = observable.subscribe(() => {
+        notified.push('second');
+        cleanupSecond();
+    }, true);
+
+    observable.subscribe(() => notified.push('third'), true);
+
+    observable.next(1);
+
+    expect(notified).toEqual(['first', 'second', 'third']);
+    expect(observable.watchingCount()).toBe(2);
+
+    observable.next(2);
+
+    expect(notified).toEqual(['first', 'second', 'third', 'first', 'third']);
+});
