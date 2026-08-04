@@ -2,6 +2,32 @@
 
 A hook library for subscriber data
 
+## Installation
+
+with npm
+
+```bash
+  npm install open-observable
+```
+Or with yarn
+```bash
+  yarn add open-observable
+```
+
+## Setup 
+
+In the index.js file, wrap your components with GlobalObservable to recognize the observables
+
+``` javascript
+root.render(
+    <React.StrictMode>
+        <GlobalObservable>
+            <App />
+        </GlobalObservable>
+    </React.StrictMode>
+);
+```
+
 ## Hooks
 
 -   useObservable
